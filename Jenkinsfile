@@ -10,11 +10,10 @@ pipeline {
     }
 
     stages {
-        stage('Checkout') {
-            steps {
-                git 'https://github.com/narayana-srimanth/spe-mini-project'
-            }
-        }
+        // The redundant 'Checkout' stage has been removed.
+        // The pipeline will start with the 'Test' stage,
+        // using the code already checked out by Jenkins.
+
         stage('Test') {
             steps {
                 sh 'pip install pytest'
@@ -30,12 +29,10 @@ pipeline {
         stage('Push to Docker Hub') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'docker-creds', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
-                    // *** FIX IS HERE: Added the 'script' block ***
                     script {
                         echo "Logging in to Docker Hub as ${DOCKER_USERNAME}..."
                         sh "docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}"
                         
-                        // Variable definition is now valid inside the script block
                         def fullImageName = "${DOCKER_USERNAME}/${IMAGE_NAME_BASE}"
                         
                         echo "Tagging image as ${fullImageName}:${BUILD_NUMBER} and ${fullImageName}:latest"
