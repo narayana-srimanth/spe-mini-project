@@ -13,7 +13,6 @@ pipeline {
         stage('Test') {
             steps {
                 sh 'pip install pytest'
-                // *** FIX IS HERE: Run pytest as a Python module ***
                 sh 'python3 -m pytest'
             }
         }
@@ -25,7 +24,8 @@ pipeline {
         }
         stage('Push to Docker Hub') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'docker-creds', passwordVariable: 'DOCKOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
+                // *** FIX IS HERE: Corrected the typo in 'passwordVariable' ***
+                withCredentials([usernamePassword(credentialsId: 'docker-creds', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
                     script {
                         echo "Logging in to Docker Hub as ${DOCKER_USERNAME}..."
                         sh "docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}"
