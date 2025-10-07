@@ -15,7 +15,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 // Clones your repository from GitHub
-                git 'https://github.com/your-username/your-repo-name.git'
+                git 'https://github.com/narayana-srimanth/spe-mini-project'
             }
         }
         stage('Test') {
