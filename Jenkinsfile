@@ -10,14 +10,11 @@ pipeline {
     }
 
     stages {
-        // The redundant 'Checkout' stage has been removed.
-        // The pipeline will start with the 'Test' stage,
-        // using the code already checked out by Jenkins.
-
         stage('Test') {
             steps {
                 sh 'pip install pytest'
-                sh 'pytest'
+                // *** FIX IS HERE: Run pytest as a Python module ***
+                sh 'python3 -m pytest'
             }
         }
         stage('Build Docker Image') {
@@ -28,7 +25,7 @@ pipeline {
         }
         stage('Push to Docker Hub') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'docker-creds', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
+                withCredentials([usernamePassword(credentialsId: 'docker-creds', passwordVariable: 'DOCKOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
                     script {
                         echo "Logging in to Docker Hub as ${DOCKER_USERNAME}..."
                         sh "docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}"
