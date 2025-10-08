@@ -1,22 +1,25 @@
 ---
 - name: Deploy Scientific Calculator Docker Container
+  # This tells Ansible to run on the hosts listed in the [local] group of your inventory file.
   hosts: local
   tasks:
+    # Task 1: Always pull the 'latest' tag from Docker Hub to ensure we have the newest version.
     - name: Pull Docker image from Docker Hub
       community.docker.docker_image:
-        # IMPORTANT: Ensure this username matches the one in your 'docker-creds'
         name: "narayanasrimanth/scientific-calculator:latest"
         source: pull
 
+    # Task 2: Stop and remove the container if it already exists. This prevents conflicts.
     - name: Stop and remove existing container if it exists
       community.docker.docker_container:
         name: "scientific-calculator-app"
         state: absent
 
+    # Task 3: Start the new container with the image we just pulled.
     - name: Run the Docker container
       community.docker.docker_container:
         name: "scientific-calculator-app"
         image: "narayanasrimanth/scientific-calculator:latest"
         state: started
-        interactive: true # Keep stdin open for the menu
-        tty: true       # Allocate a pseudo-TTY
+        interactive: true # Keep stdin open so we can interact with the menu.
+        tty: true       # Allocate a pseudo-TTY for the interactive session.
