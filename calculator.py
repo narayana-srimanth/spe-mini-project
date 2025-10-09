@@ -1,5 +1,5 @@
 import math
-
+#this is square root function
 def square_root(x):
     """Calculates the square root of a number."""
     if x < 0:
