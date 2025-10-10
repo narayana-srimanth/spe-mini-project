@@ -1,7 +1,7 @@
 import math
 #this is square root function
 def square_root(x):
-    """Calculates the square root of a number."""
+    """Calculates the square root of a number. updating again """
     if x < 0:
         return "Error: Cannot calculate square root of a negative number."
     return math.sqrt(x)
